@@ -1,0 +1,41 @@
+{
+    "id": "det-003",
+    "name": "Suspicious PowerShell Execution Flags",
+    "description": "PowerShell launched with execution bypass, hidden window, or non-interactive flags — common in LOLBin/malware execution",
+    "version": 1,
+    "enabled": true,
+    "severity": "medium",
+    "confidence": 75,
+    "detection_type": "rule",
+    "tags": [
+        "powershell",
+        "execution",
+        "lolbin",
+        "defense_evasion"
+    ],
+    "mitre": {
+        "tactic": "Execution",
+        "technique": "T1059",
+        "sub_technique": "T1059.001"
+    },
+    "detection": {
+        "logic_type": "field_match",
+        "conditions": [
+            {
+                "field": "process.name",
+                "op": "equals",
+                "value": "powershell.exe"
+            },
+            {
+                "field": "process.args",
+                "op": "regex",
+                "value": "(?i)(-nop|-noni|-w\\s+h|-exec\\s+bypass|-windowstyle\\s+hidden)"
+            }
+        ]
+    },
+    "response": {
+        "auto_playbook": "pb-open-incident",
+        "notify_tier": "L1"
+    },
+    "false_positive_notes": "Remote management scripts, software deployment tools (SCCM, PDQ). Verify parent process."
+}

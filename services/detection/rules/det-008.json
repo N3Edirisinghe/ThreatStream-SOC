@@ -1,0 +1,36 @@
+{
+    "id": "det-008",
+    "name": "Large Data Transfer over SMB",
+    "description": "Detection of abnormally large data transfers over SMB protocol, indicating potential data exfiltration",
+    "version": 1,
+    "enabled": true,
+    "severity": "low",
+    "confidence": 60,
+    "detection_type": "rule",
+    "tags": [
+        "collection",
+        "exfiltration",
+        "smb"
+    ],
+    "mitre": {
+        "tactic": "Collection",
+        "technique": "T1039"
+    },
+    "detection": {
+        "logic_type": "threshold",
+        "conditions": [
+            {
+                "field": "network.protocol",
+                "op": "equals",
+                "value": "smb"
+            },
+            {
+                "field": "network.bytes",
+                "op": "greater_than",
+                "value": 104857600
+            }
+        ],
+        "threshold": 1,
+        "window_seconds": 300
+    }
+}

@@ -1,0 +1,43 @@
+{
+    "id": "det-010",
+    "name": "Suspicious Process Hierarchy",
+    "description": "Detection of common LOLBins spawned by unusual parents (e.g., cmd.exe spawned by w3wp.exe)",
+    "version": 1,
+    "enabled": true,
+    "severity": "high",
+    "confidence": 80,
+    "detection_type": "rule",
+    "tags": [
+        "execution",
+        "lolbins"
+    ],
+    "mitre": {
+        "tactic": "Execution",
+        "technique": "T1059"
+    },
+    "detection": {
+        "logic_type": "match",
+        "conditions": [
+            {
+                "field": "process.parent.name",
+                "op": "in",
+                "value": [
+                    "w3wp.exe",
+                    "sqlservr.exe",
+                    "excel.exe",
+                    "winword.exe"
+                ]
+            },
+            {
+                "field": "process.name",
+                "op": "in",
+                "value": [
+                    "cmd.exe",
+                    "powershell.exe",
+                    "whoami.exe",
+                    "net.exe"
+                ]
+            }
+        ]
+    }
+}

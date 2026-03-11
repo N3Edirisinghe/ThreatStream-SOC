@@ -1,0 +1,37 @@
+{
+    "id": "det-009",
+    "name": "Ransomware File Extensions",
+    "description": "Detection of file rename operations to known ransomware extensions",
+    "version": 1,
+    "enabled": true,
+    "severity": "critical",
+    "confidence": 95,
+    "detection_type": "rule",
+    "tags": [
+        "impact",
+        "ransomware"
+    ],
+    "mitre": {
+        "tactic": "Impact",
+        "technique": "T1486"
+    },
+    "detection": {
+        "logic_type": "match",
+        "conditions": [
+            {
+                "field": "file.extension",
+                "op": "in",
+                "value": [
+                    ".encrypted",
+                    ".locked",
+                    ".crypted",
+                    ".crypt"
+                ]
+            }
+        ]
+    },
+    "response": {
+        "auto_playbook": "pb-001",
+        "notify_tier": "L3"
+    }
+}

@@ -1,0 +1,43 @@
+{
+    "id": "det-002",
+    "name": "Impossible Travel Logon",
+    "description": "User logged in from two geographically distant locations in an impossibly short timeframe",
+    "version": 1,
+    "enabled": true,
+    "severity": "high",
+    "confidence": 90,
+    "detection_type": "rule",
+    "tags": [
+        "identity",
+        "impossible_travel",
+        "initial_access"
+    ],
+    "mitre": {
+        "tactic": "Initial Access",
+        "technique": "T1078"
+    },
+    "detection": {
+        "logic_type": "threshold",
+        "conditions": [
+            {
+                "field": "event.category",
+                "op": "equals",
+                "value": "authentication"
+            },
+            {
+                "field": "event.outcome",
+                "op": "equals",
+                "value": "success"
+            }
+        ],
+        "group_by": [
+            "user.name"
+        ],
+        "threshold": 2,
+        "window_seconds": 3600
+    },
+    "response": {
+        "auto_playbook": "pb-003",
+        "notify_tier": "L2"
+    }
+}

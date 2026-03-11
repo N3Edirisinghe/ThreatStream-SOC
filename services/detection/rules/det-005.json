@@ -1,0 +1,36 @@
+{
+    "id": "det-005",
+    "name": "Scheduled Task Creation",
+    "description": "Detection of new scheduled tasks which are often used for persistence",
+    "version": 1,
+    "enabled": true,
+    "severity": "medium",
+    "confidence": 70,
+    "detection_type": "rule",
+    "tags": [
+        "persistence",
+        "scheduled_task"
+    ],
+    "mitre": {
+        "tactic": "Persistence",
+        "technique": "T1053.005"
+    },
+    "detection": {
+        "logic_type": "match",
+        "conditions": [
+            {
+                "field": "event.action",
+                "op": "contains",
+                "value": "task-created"
+            },
+            {
+                "field": "process.name",
+                "op": "equals",
+                "value": "schtasks.exe"
+            }
+        ]
+    },
+    "response": {
+        "notify_tier": "L1"
+    }
+}

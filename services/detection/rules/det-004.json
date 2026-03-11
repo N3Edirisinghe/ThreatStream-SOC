@@ -1,0 +1,35 @@
+{
+    "id": "det-004",
+    "name": "Base64 Encoded Command Execution",
+    "description": "Detects PowerShell -EncodedCommand or similar base64 payload execution — strong indicator of obfuscated malware",
+    "version": 1,
+    "enabled": true,
+    "severity": "high",
+    "confidence": 90,
+    "detection_type": "rule",
+    "tags": [
+        "encoded_command",
+        "obfuscation",
+        "defense_evasion",
+        "execution"
+    ],
+    "mitre": {
+        "tactic": "Defense Evasion",
+        "technique": "T1027"
+    },
+    "detection": {
+        "logic_type": "field_match",
+        "conditions": [
+            {
+                "field": "process.args",
+                "op": "regex",
+                "value": "(?i)(-encodedcommand|-enc\\s+[A-Za-z0-9+/=]{20,})"
+            }
+        ]
+    },
+    "response": {
+        "auto_playbook": "pb-open-incident",
+        "notify_tier": "L2"
+    },
+    "false_positive_notes": "Some legitimate deployment scripts. Decode payload and verify before escalating."
+}

@@ -1,0 +1,56 @@
+{
+  "id": "det-001",
+  "name": "Brute Force Authentication Attempt",
+  "description": "5+ authentication failures from the same source IP targeting the same user within 60 seconds",
+  "version": 1,
+  "enabled": true,
+  "severity": "high",
+  "confidence": 85,
+  "detection_type": "rule",
+  "tags": [
+    "brute_force",
+    "credential_access",
+    "authentication"
+  ],
+  "mitre": {
+    "tactic": "Credential Access",
+    "technique": "T1110",
+    "sub_technique": "T1110.001"
+  },
+  "detection": {
+    "logic_type": "threshold",
+    "conditions": [
+      {
+        "field": "event.outcome",
+        "op": "equals",
+        "value": "failure"
+      },
+      {
+        "field": "event.category",
+        "op": "contains",
+        "value": "authentication"
+      },
+      {
+        "field": "process.name",
+        "op": "equals",
+        "value": "powershell.exe"
+      },
+      {
+        "field": "process.args",
+        "op": "regex",
+        "value": "(?i)(-nop|-noni|-w\\s+h|-exec\\s+bypass|-windowstyle\\s+hidden)"
+      }
+    ],
+    "group_by": [
+      "source.ip",
+      "user.name"
+    ],
+    "threshold": 5,
+    "window_seconds": 60
+  },
+  "response": {
+    "auto_playbook": "pb-open-incident",
+    "notify_tier": "L1"
+  },
+  "false_positive_notes": "Service accounts with automated jobs. Whitelist by source.ip or user.name prefix 'svc_'"
+}

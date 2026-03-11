@@ -1,0 +1,43 @@
+{
+    "id": "det-006",
+    "name": "Registry Run Key Persistence",
+    "description": "Write to HKCU/HKLM Run key — a classic persistence mechanism used by malware to survive reboots",
+    "version": 1,
+    "enabled": true,
+    "severity": "high",
+    "confidence": 80,
+    "detection_type": "rule",
+    "tags": [
+        "persistence",
+        "registry",
+        "run_key"
+    ],
+    "mitre": {
+        "tactic": "Persistence",
+        "technique": "T1547",
+        "sub_technique": "T1547.001"
+    },
+    "detection": {
+        "logic_type": "field_match",
+        "conditions": [
+            {
+                "field": "winlog.event_id",
+                "op": "in",
+                "value": [
+                    4657,
+                    4656
+                ]
+            },
+            {
+                "field": "registry.path",
+                "op": "regex",
+                "value": "(?i)(HKCU|HKLM)\\\\Software\\\\Microsoft\\\\Windows\\\\CurrentVersion\\\\Run"
+            }
+        ]
+    },
+    "response": {
+        "auto_playbook": "pb-open-incident",
+        "notify_tier": "L1"
+    },
+    "false_positive_notes": "Legitimate software installers (antivirus, Teams, OneDrive). Verify registry_value_data path."
+}

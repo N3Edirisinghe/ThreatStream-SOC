@@ -1,0 +1,51 @@
+{
+    "id": "det-007",
+    "name": "Large Outbound Transfer to High-Risk Country",
+    "description": "Significant outbound data transfer (>50KB) to an IP geolocated in a sanctioned or high-risk country",
+    "version": 1,
+    "enabled": true,
+    "severity": "medium",
+    "confidence": 65,
+    "detection_type": "rule",
+    "tags": [
+        "exfiltration",
+        "network",
+        "geolocation",
+        "c2"
+    ],
+    "mitre": {
+        "tactic": "Exfiltration",
+        "technique": "T1048"
+    },
+    "detection": {
+        "logic_type": "field_match",
+        "conditions": [
+            {
+                "field": "network.direction",
+                "op": "equals",
+                "value": "out"
+            },
+            {
+                "field": "destination.geo.country_iso_code",
+                "op": "in",
+                "value": [
+                    "KP",
+                    "IR",
+                    "SY",
+                    "CU",
+                    "RU"
+                ]
+            },
+            {
+                "field": "network.bytes",
+                "op": "greater_than",
+                "value": 50000
+            }
+        ]
+    },
+    "response": {
+        "auto_playbook": "pb-open-incident",
+        "notify_tier": "L1"
+    },
+    "false_positive_notes": "VPN exit nodes, CDN IPs, legitimate business with offices in listed countries. High FP rate — tune threshold and whitelist known-good IPs."
+}

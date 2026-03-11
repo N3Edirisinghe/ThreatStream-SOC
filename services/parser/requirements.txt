@@ -1,0 +1,4 @@
+confluent-kafka==2.3.0
+opensearch-py==2.5.0
+pydantic-settings==2.2.1
+python-dateutil==2.9.0
