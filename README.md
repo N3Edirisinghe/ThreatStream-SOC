@@ -13,6 +13,9 @@
 
 ---
 
+> [!WARNING]
+> **Work in Progress:** This project is currently under active development. Features, architecture, and documentation are subject to change.
+
 ## 📖 Overview
 
 **ThreatStream-SOC** is a state-of-the-art, autonomous Security Operations Center simulation platform designed for real-time log ingestion, threat detection, and incident response. Built on a resilient microservices architecture, it seamlessly processes streaming data to identify malicious activities using both rule-based heuristics and stateful multi-step correlation logic.
